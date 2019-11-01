@@ -67,7 +67,7 @@ namespace Nota2.Controllers
                     {
                         //GERANDO COOKIE
                         this.Set(chave, valor, 5);
-
+                        voto.data_voto = DateTime.Now;
                         _context.Add(voto);
                         await _context.SaveChangesAsync();
                         return RedirectToAction(nameof(Index));
