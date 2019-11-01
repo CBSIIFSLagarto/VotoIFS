@@ -28,7 +28,7 @@ namespace Nota2.Models
         [DataType(DataType.Password)]
         [StringLength(100, MinimumLength = 4)]
         [Display(Name = "Senha:")]     
-        public String senha {             
+        public String Senha {             
             get 
             {
                 return this.temp;
