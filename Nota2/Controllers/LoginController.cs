@@ -37,7 +37,7 @@ namespace Nota2.Controllers
             if (ModelState.IsValid)
             {
 
-                var result = _context.Usuarios.Where(p => p.Email.Equals(login.Email) && p.senha.Equals(login.senha)).FirstOrDefault();
+                var result = _context.Usuarios.Where(p => p.Email.Equals(login.Email) && p.Senha.Equals(login.senha)).FirstOrDefault();
                 if (result != null)
                 {
                     RecordInSession(SessionKeyId, Convert.ToString(result.UseID));
