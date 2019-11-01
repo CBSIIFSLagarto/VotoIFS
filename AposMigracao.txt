@@ -1,0 +1,22 @@
+USE [campanha]
+GO
+
+INSERT INTO [dbo].[TipoUsuarios]
+           ([Descricao])
+     VALUES
+           ('Administrador')
+GO
+
+INSERT INTO [dbo].[Usuarios]
+           ([Nome]
+           ,[Email]
+           ,[senha]
+           ,[TipoId])
+     VALUES
+           ('Vinicius Gomes'
+           ,'vinicius.pilas@gmail.com',
+           '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4',
+           1)
+GO
+
+
