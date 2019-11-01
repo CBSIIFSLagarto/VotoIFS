@@ -13,6 +13,7 @@ using Nota2.Util;
 
 namespace Nota2.Controllers
 {
+    [Area("Voto")]
     public class VotosController : Controller
     {
         private readonly MyContext _context;
