@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Nota2.Data;
 using Nota2.Models;
+using Nota2.ModelsView;
 using Nota2.Util;
 
 namespace Nota2.Controllers
@@ -32,7 +33,8 @@ namespace Nota2.Controllers
             {
                 if (DateTime.Compare(campanha.DataHoraInicio,DateTime.Now) <= 0 && DateTime.Compare(campanha.DataHoraFim,DateTime.Now) >= 0)
                 {
-                    return View();
+                    var viewModel = new VotoFormViewModel { Campanha = campanha };
+                    return View(viewModel);
                 }
                 else
                 {
