@@ -14,7 +14,7 @@ namespace Nota2.Models
         [Display(Name = "Comentario:")]
         public string Comentario { get; set; }
         public int CamId { get; set; }
-        public DateTime data_voto { get; set; }
+        public DateTime DataVoto { get; set; }
         public Campanha Campanha { get; set; }
     }
 }
