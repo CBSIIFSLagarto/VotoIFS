@@ -50,7 +50,7 @@
                     @Html.DisplayFor(modelItem => item.AutoAvaliacao)
                 </td>
                 <td>
-                    <a asp-controller="Votos" asp-action="Votar" asp-route-id="@item.Chave">URL</a> |
+                    <a asp-area="Voto" asp-controller="Votos" asp-action="Votar" asp-route-id="@item.Chave">URL</a> |
                     <a asp-action="Edit" asp-route-id="@item.CamID">Editar</a> |
                     <a asp-action="Details" asp-route-id="@item.CamID">Detalhes</a> |
                     <a asp-action="Delete" asp-route-id="@item.CamID">Deletar</a>
