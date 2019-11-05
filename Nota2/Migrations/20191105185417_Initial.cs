@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Nota2.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +13,7 @@ namespace Nota2.Migrations
                 columns: table => new
                 {
                     TipoID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Descricao = table.Column<string>(maxLength: 30, nullable: false)
                 },
                 constraints: table =>
@@ -25,10 +26,10 @@ namespace Nota2.Migrations
                 columns: table => new
                 {
                     UseID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Nome = table.Column<string>(maxLength: 255, nullable: false),
                     Email = table.Column<string>(maxLength: 100, nullable: false),
-                    senha = table.Column<string>(maxLength: 100, nullable: false),
+                    Senha = table.Column<string>(maxLength: 100, nullable: false),
                     TipoId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -47,7 +48,7 @@ namespace Nota2.Migrations
                 columns: table => new
                 {
                     CamID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Chave = table.Column<string>(maxLength: 20, nullable: true),
                     Descricao = table.Column<string>(maxLength: 255, nullable: false),
                     DataHoraInicio = table.Column<DateTime>(nullable: false),
@@ -71,11 +72,11 @@ namespace Nota2.Migrations
                 columns: table => new
                 {
                     VotID = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Nota = table.Column<int>(nullable: false),
                     Comentario = table.Column<string>(nullable: true),
                     CamId = table.Column<int>(nullable: false),
-                    data_voto = table.Column<DateTime>(nullable: false)
+                    DataVoto = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

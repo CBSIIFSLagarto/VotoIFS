@@ -84,7 +84,11 @@ namespace Nota2.Controllers
                     } 
                     else 
                     {
-                        return NotFound();
+                        var viewModel = new VotoFormViewModel { 
+                            Campanha = campanha,
+                            Error = "O período de votação dessa campanha expirou"
+                        };
+                        return View(viewModel);
                     }
                 }
                 else

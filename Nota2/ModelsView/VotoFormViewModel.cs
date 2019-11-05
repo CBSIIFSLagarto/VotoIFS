@@ -7,5 +7,7 @@ namespace Nota2.ModelsView
     {
         public Voto Voto { get; set; }
         public Campanha Campanha { get; set; }
+
+        public string Error { get; set; }
     }
 }
