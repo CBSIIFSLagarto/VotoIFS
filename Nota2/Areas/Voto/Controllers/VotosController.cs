@@ -84,7 +84,7 @@ namespace Nota2.Controllers
                     } 
                     else 
                     {
-                        // TODO: Redirecionar para tela erro informando que o tempo de votação expirou
+                        return NotFound();
                     }
                 }
                 else
