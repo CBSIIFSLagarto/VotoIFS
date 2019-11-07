@@ -353,8 +353,8 @@ D:\Vinicius\OneDrive\IFS\Web2\Core_RBS\Core_RBS\obj\Debug\netcoreapp3.0\Core_RBS
 D:\Vinicius\OneDrive\IFS\Web2\Core_RBS\Core_RBS\obj\Debug\netcoreapp3.0\Core_RBS.csproj.CopyComplete
 D:\Vinicius\OneDrive\IFS\Web2\Core_RBS\Core_RBS\obj\Debug\netcoreapp3.0\Core_RBS.dll
 D:\Vinicius\OneDrive\IFS\Web2\Core_RBS\Core_RBS\obj\Debug\netcoreapp3.0\Core_RBS.pdb
-D:\Vinicius\OneDrive\IFS\Web2\Core_RBS\Core_RBS\obj\Debug\netcoreapp3.0\Core_RBS.csprojAssemblyReference.cache
 D:\Vinicius\OneDrive\IFS\Web2\Core_RBS\Core_RBS\obj\Debug\netcoreapp3.0\Core_RBS.MvcApplicationPartsAssemblyInfo.cs
 D:\Vinicius\OneDrive\IFS\Web2\Core_RBS\Core_RBS\obj\Debug\netcoreapp3.0\Core_RBS.MvcApplicationPartsAssemblyInfo.cache
 D:\Vinicius\OneDrive\IFS\Web2\Core_RBS\Core_RBS\obj\Debug\netcoreapp3.0\Razor\Views\Votos\Index.cshtml.g.cs
 D:\Vinicius\OneDrive\IFS\Web2\Core_RBS\Core_RBS\obj\Debug\netcoreapp3.0\Razor\Views\Votos\Votar.cshtml.g.cs
+D:\Vinicius\OneDrive\IFS\Web2\Core_RBS\Core_RBS\obj\Debug\netcoreapp3.0\Core_RBS.csprojAssemblyReference.cache

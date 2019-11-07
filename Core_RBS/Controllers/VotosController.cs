@@ -9,7 +9,7 @@ using Core_RBS.Models;
 using Core_RBS.Util;
 
 
-namespace Nota2.Controllers
+namespace Core_RBS.Controllers
 {
     public class VotosController : Controller
     {
@@ -26,22 +26,18 @@ namespace Nota2.Controllers
         // GET: Votoes/Votar
         public IActionResult Votar(string id)
         {
-            var campanha = _context.Campanhas.Where(p => p.Chave.Equals(id)).FirstOrDefault();
+            var campanha = _context.Campanhas.Where(p => p.Chave.Equals(id) && DateTime.Compare(p.DataHoraInicio, DateTime.Now) <= 0 && DateTime.Compare(p.DataHoraFim, DateTime.Now) >= 0).FirstOrDefault();
             if (campanha != null)
             {
-                if (DateTime.Compare(campanha.DataHoraInicio,DateTime.Now) <= 0 && DateTime.Compare(campanha.DataHoraFim,DateTime.Now) >= 0)
-                {
-                    return View();
-                }
-                else
-                {
-                    return NotFound();
-                }
+                return View();
             }
             else
             {
-                return NotFound();
-            }            
+               string msg = "Essa página ainda não está liberada!";
+               ViewBag.MSG = msg;
+                //return RedirectToAction(nameof(Index));
+                return View("Index");
+            }
         }
         // POST: Votoes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -62,6 +58,9 @@ namespace Nota2.Controllers
                     //PEGANDO COOKIE
                     string cookieValueFromReq = Request.Cookies[chave];
 
+                    string msg = "Voto com Sucesso!";
+                    ViewBag.MSG = msg;
+
                     if (cookieValueFromReq == null)
                     {
                         //GERANDO COOKIE
@@ -69,11 +68,13 @@ namespace Nota2.Controllers
                         voto.DataVoto = DateTime.Now;
                         _context.Add(voto);
                         await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
+                        //return RedirectToAction(nameof(Index));
+                        return View("Index");
                     }
                     else
                     {
-                        return RedirectToAction(nameof(Index));
+                        //return RedirectToAction(nameof(Index));
+                        return View("Index");
                     }
                 }
                 else
