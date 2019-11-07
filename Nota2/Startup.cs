@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Nota2.Data;
+using Nota2.Services;
 using System;
 
 namespace Nota2
@@ -24,6 +25,9 @@ namespace Nota2
             services.AddControllersWithViews();
             //PEGA STRING DE CONEXÃO
             services.AddDbContext<MyContext>(p => p.UseSqlServer(Configuration.GetConnectionString("ConnectionMyPc")));
+
+            services.AddScoped<VotosService>();
+
             //ATIVA SESSION
             services.AddSession();           
         }

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Nota2.Models.Voto>
+
+@{
+    ViewData["Title"] = "Votos";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <form class="navbar-form navbar-left" role="search">
+            <div class="form-row align-items-center">
+                <div class="col-auto my-1">
+                    <label for="minDate">Período:</label>
+                </div>
+                <div class="col-auto my-1">
+                    <input type="datetime-local" class="form-control" name="minDate" value=@ViewData["minDate"] />
+                </div>
+                <div class="col-auto my-1">
+                    <input type="datetime-local" class="form-control" name="maxDate" value=@ViewData["maxDate"] />
+                </div>
+                <div class="col-auto my-1">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</nav>
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr class="success">
+                    <th>
+                        @Html.DisplayNameFor(model => model.Campanha.Descricao)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataVoto)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nota)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Comentario)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Campanha.Descricao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataVoto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nota)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Comentario)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="panel-heading">
+        <h3 class="panel-title">Total de votos = @Model.Count()</h3>
+    </div>
+</div>

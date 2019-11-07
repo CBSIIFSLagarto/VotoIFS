@@ -51,7 +51,7 @@ namespace Nota2.Models
         public DateTime DataHoraFim { get; set; }
 
         [DefaultValue(true)]
-        [Display(Name = "Auto Avaliação:")]        
+        [Display(Name = "Autoavaliação:")]
         public bool AutoAvaliacao { get; set; }
         public int UseId { get; set; }
         public Usuario Usuario { get; set; }

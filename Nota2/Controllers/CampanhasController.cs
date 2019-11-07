@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Nota2.Data;
 using Nota2.Models;
+using Nota2.Services;
 using QRCoder;
 
 namespace Nota2.Controllers
@@ -18,10 +19,12 @@ namespace Nota2.Controllers
     {
         private readonly MyContext _context;
         public const string SessionKeyId = "_Id";
+        private readonly VotosService _votosService;
 
-        public CampanhasController(MyContext context)
+        public CampanhasController(MyContext context, VotosService votosService)
         {
             _context = context;
+            _votosService = votosService;
         }
 
         // GET: Campanhas
@@ -209,6 +212,24 @@ namespace Nota2.Controllers
         private bool CampanhaExists(int id)
         {
             return _context.Campanhas.Any(e => e.CamID == id);
+        }
+
+        public async Task<IActionResult> VotosCampanha(int? id, DateTime? minDate, DateTime? maxDate)
+        {
+            /*
+            if (!minDate.HasValue)
+            {
+                minDate = DateTime.Now;
+            }
+            if (!maxDate.HasValue)
+            {
+                maxDate = DateTime.Now;
+            }
+            ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-dd HH:mm");
+            ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-dd HH:mm");
+            */
+            var result = await _votosService.FindAllAsync(id, minDate, maxDate);
+            return View(result);
         }
     }
 }
