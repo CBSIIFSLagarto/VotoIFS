@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Core_RBS.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Core_RBS.Models;
 
 
 namespace Core_RBS.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<Usuario>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -21,7 +21,7 @@ namespace Core_RBS.Data
 
             builder.Entity<Campanha>(campanha =>
             {
-                campanha.HasKey(p => p.CamID);                
+                campanha.HasKey(p => p.CamID);
             });
 
             builder.Entity<Voto>(voto =>

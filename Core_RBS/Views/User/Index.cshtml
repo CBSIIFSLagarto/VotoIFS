@@ -1,0 +1,47 @@
+﻿
+@model IEnumerable<Core_RBS.Models.Usuario>
+@{
+    ViewData["Title"] = "Usuários";
+}
+
+<h1>Grupo de Usuários</h1>
+
+<p>
+    <a asp-area="Identity" asp-page="/Account/Register">Novo Usuário</a>
+</p>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert-success border-success badge-success border">
+        Menssagem: @TempData["Success"].ToString()
+    </div>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                <a asp-action="Reset" asp-route-id="@item.UserName">Reiniciar Senha</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

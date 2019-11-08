@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Core_RBS.Data;
+using Core_RBS.Models;
+using Core_RBS.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Core_RBS.Data;
-using Core_RBS.Models;
-using Core_RBS.Util;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace Core_RBS.Controllers
@@ -33,8 +33,8 @@ namespace Core_RBS.Controllers
             }
             else
             {
-               string msg = "Essa página ainda não está liberada!";
-               ViewBag.MSG = msg;
+                string msg = "Essa página ainda não está liberada!";
+                ViewBag.MSG = msg;
                 //return RedirectToAction(nameof(Index));
                 return View("Index");
             }

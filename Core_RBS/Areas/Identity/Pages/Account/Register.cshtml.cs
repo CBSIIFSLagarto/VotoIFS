@@ -1,36 +1,32 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;using Core_RBS.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 
 namespace Core_RBS.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+    //[AllowAnonymous]
+    [Authorize(Policy = "Administrador")]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<Usuario> _signInManager;
+        private readonly UserManager<Usuario> _userManager;
         private RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         //private readonly IEmailSender _emailSender;
-        
+
 
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            ILogger<RegisterModel> logger,            
+            UserManager<Usuario> userManager,
+            SignInManager<Usuario> signInManager,
+            ILogger<RegisterModel> logger,
             RoleManager<IdentityRole> roleManager
             //IEmailSender emailSender
             )
@@ -51,14 +47,19 @@ namespace Core_RBS.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+
+            [Required(ErrorMessage = "O campo nome é obrigatório", AllowEmptyStrings = false)]            
+            [Display(Name = "Nome:")]
+            public string Nome { get; set; }
+
             [Required(ErrorMessage = "O campo e-mail é obrigatório", AllowEmptyStrings = false)]
             [EmailAddress(ErrorMessage = "Formato de e-mail inválido")]
             [Display(Name = "E-mail")]
             public string Email { get; set; }
 
             [Required(ErrorMessage = "O campo senha é obrigatório")]
-            [StringLength(100, ErrorMessage = "A {0} deve ter pelo menos {2} e no máximo {1} caracteres.", MinimumLength = 6)]            
-            [RegularExpression(@"^.*(?=.{5,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$", ErrorMessage = "Senha fora do padrão, Ex: senhaIFS@123")]
+            [StringLength(100, ErrorMessage = "A {0} deve ter pelo menos {2} e no máximo {1} caracteres.", MinimumLength = 6)]
+            //[RegularExpression(@"^.*(?=.{5,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$", ErrorMessage = "Senha fora do padrão, Ex: senhaIFS@123")]
             [DataType(DataType.Password)]
             [Display(Name = "Senha")]
             public string Password { get; set; }
@@ -67,10 +68,10 @@ namespace Core_RBS.Areas.Identity.Pages.Account
             [Display(Name = "Confirmar senha")]
             [Compare("Password", ErrorMessage = "O campo de confirmação de senha não confere!")]
             public string ConfirmPassword { get; set; }
-            
-            [Display(Name = "Regra")]
+
+            [Display(Name = "Grupo")]
             [Required(ErrorMessage = "O campo Regra é obrigatório", AllowEmptyStrings = false)]
-            public string Name { get; set; }
+            public string Grupo { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -85,11 +86,11 @@ namespace Core_RBS.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             // search role
-            var role = _roleManager.FindByIdAsync(Input.Name).Result;
+            var role = _roleManager.FindByIdAsync(Input.Grupo).Result;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new Usuario { UserName = Input.Email, Email = Input.Email, Nome = Input.Nome };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -120,9 +121,10 @@ namespace Core_RBS.Areas.Identity.Pages.Account
                     //    return LocalRedirect(returnUrl);
                     //}
                     //await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
-                    
-                    
+                    //return LocalRedirect(returnUrl);
+                    return RedirectToAction("Index", "User");
+
+
 
                 }
                 foreach (var error in result.Errors)

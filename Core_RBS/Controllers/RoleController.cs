@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;using Core_RBS.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,18 +18,18 @@ namespace Core_RBS.Controllers
         public RoleController(RoleManager<IdentityRole> roleManager)
         {
             this.roleManager = roleManager;
-        }        
+        }
         public IActionResult Index()
         {
             var roles = roleManager.Roles.ToList();
             return View(roles);
         }
-                
+
         public IActionResult Create()
         {
             return View(new IdentityRole());
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Create(IdentityRole role)
         {

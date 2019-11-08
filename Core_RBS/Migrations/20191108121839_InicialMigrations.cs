@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Core_RBS.Migrations
 {
-    public partial class InitialMigrations : Migration
+    public partial class InicialMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,7 +39,8 @@ namespace Core_RBS.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Nome = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -163,14 +164,14 @@ namespace Core_RBS.Migrations
                     DataHoraInicio = table.Column<DateTime>(nullable: false),
                     DataHoraFim = table.Column<DateTime>(nullable: false),
                     AutoAvaliacao = table.Column<bool>(nullable: false),
-                    IdentityUserId = table.Column<string>(nullable: true)
+                    UsuarioId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Campanhas", x => x.CamID);
                     table.ForeignKey(
-                        name: "FK_Campanhas_AspNetUsers_IdentityUserId",
-                        column: x => x.IdentityUserId,
+                        name: "FK_Campanhas_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -238,9 +239,9 @@ namespace Core_RBS.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Campanhas_IdentityUserId",
+                name: "IX_Campanhas_UsuarioId",
                 table: "Campanhas",
-                column: "IdentityUserId");
+                column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Votos_CamId",
