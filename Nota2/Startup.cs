@@ -27,6 +27,7 @@ namespace Nota2
             services.AddDbContext<MyContext>(p => p.UseSqlServer(Configuration.GetConnectionString("ConnectionMyPc")));
 
             services.AddScoped<VotosService>();
+            services.AddScoped<CampanhaService>();
 
             //ATIVA SESSION
             services.AddSession();           

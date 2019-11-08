@@ -17,12 +17,16 @@ namespace Nota2.Services
             _context = context;
         }
 
-        public async Task<List<Voto>> FindAllAsync(int? id, DateTime? minDate, DateTime? maxDate)
+        public async Task<List<Voto>> FindAllAsync(int camId, int autoavaliacao, DateTime? minDate, DateTime? maxDate, int userId)
         {
             var result = from obj in _context.Votos select obj;
-            if (id.HasValue)
+            if (camId > 0)
             {
-                result = result.Where(x => x.CamId == id.Value);
+                result = result.Where(x => x.CamId == camId);
+            }
+            if (autoavaliacao > 0)
+            {
+                result = result.Include(x => x.Campanha).Where(x => x.Campanha.AutoAvaliacao == true);
             }
             if (minDate.HasValue)
             {
@@ -32,7 +36,7 @@ namespace Nota2.Services
             {
                 result = result.Where(x => x.DataVoto <= maxDate.Value);
             }
-            return await result.Include(x => x.Campanha).OrderByDescending(x => x.DataVoto).ToListAsync();
+            return await result.Include(x => x.Campanha).Where(x => x.Campanha.UseId == userId).OrderByDescending(x => x.DataVoto).ToListAsync();
         }
     }
 }
