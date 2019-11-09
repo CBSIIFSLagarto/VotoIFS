@@ -38,5 +38,17 @@ namespace Nota2.Services
             }
             return await result.Include(x => x.Campanha).Where(x => x.Campanha.UseId == userId).OrderByDescending(x => x.DataVoto).ToListAsync();
         }
+
+        public double GetMediaVotos(List<Voto> votos)
+        {
+            var soma = 0.0;
+            var qtd = 0.0;
+            foreach(var item in votos)
+            {
+                soma += item.Nota;
+                qtd++;
+            }
+            return soma/qtd;
+        }
     }
 }
