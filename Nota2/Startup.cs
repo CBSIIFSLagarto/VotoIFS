@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Nota2.Data;
+using Nota2.Services;
 using System;
 
 namespace Nota2
@@ -22,8 +23,16 @@ namespace Nota2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            if ( ! string.IsNullOrEmpty(Configuration.GetConnectionString("UsePostgres")) ) {
             //PEGA STRING DE CONEXÃO
             services.AddDbContext<MyContext>(p => p.UseNpgsql(Configuration.GetConnectionString("Matilda")));
+            } else {
+              //PEGA STRING DE CONEXÃO  
+             services.AddDbContext<MyContext>(p => p.UseSqlServer(Configuration.GetConnectionString("ConnectionMyPc")));
+            }
+            services.AddScoped<VotosService>();
+            services.AddScoped<CampanhaService>();
+          
             //ATIVA SESSION
             services.AddSession();           
         }

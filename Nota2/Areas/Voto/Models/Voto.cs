@@ -11,9 +11,10 @@ namespace Nota2.Models
         public long VotID { get; set; }
         [DefaultValue(-1)]
         public int Nota { get; set; }
-        [Display(Name = "Comentario:")]
+        [Display(Name = "Comentário")]
         public string Comentario { get; set; }
         public int CamId { get; set; }
+        [Display(Name = "Data do Voto")]
         public DateTime DataVoto { get; set; }
         public Campanha Campanha { get; set; }
     }

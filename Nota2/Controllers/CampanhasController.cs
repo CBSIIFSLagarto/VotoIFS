@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -10,6 +11,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Nota2.Data;
 using Nota2.Models;
+using Nota2.ModelsView;
+using Nota2.Services;
 using QRCoder;
 
 namespace Nota2.Controllers
@@ -18,10 +21,14 @@ namespace Nota2.Controllers
     {
         private readonly MyContext _context;
         public const string SessionKeyId = "_Id";
+        private readonly VotosService _votosService;
+        private readonly CampanhaService _campanhaService;
 
-        public CampanhasController(MyContext context)
+        public CampanhasController(MyContext context, VotosService votosService, CampanhaService campanhaService)
         {
             _context = context;
+            _votosService = votosService;
+            _campanhaService = campanhaService;
         }
 
         // GET: Campanhas
@@ -36,13 +43,13 @@ namespace Nota2.Controllers
             else
             {
                 return RedirectToAction("Index", "Login");
-            }            
+            }
         }
 
         // GET: Campanhas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            var sessao =Convert.ToInt32(HttpContext.Session.GetString(SessionKeyId));
+            var sessao = Convert.ToInt32(HttpContext.Session.GetString(SessionKeyId));
             if (id == null)
             {
                 return NotFound();
@@ -199,7 +206,7 @@ namespace Nota2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            
+
             var campanha = await _context.Campanhas.FindAsync(id);
             _context.Campanhas.Remove(campanha);
             await _context.SaveChangesAsync();
@@ -209,6 +216,35 @@ namespace Nota2.Controllers
         private bool CampanhaExists(int id)
         {
             return _context.Campanhas.Any(e => e.CamID == id);
+        }
+
+        public async Task<IActionResult> VotosCampanha(int camId, int autoavaliacao, DateTime? minDate, DateTime? maxDate)
+        {
+            var sessao = HttpContext.Session.GetString(SessionKeyId);
+            if (sessao != null)
+            {
+                /*
+                if (!minDate.HasValue)
+                {
+                    minDate = DateTime.Now;
+                }
+                if (!maxDate.HasValue)
+                {
+                    maxDate = DateTime.Now;
+                }
+                ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-dd HH:mm");
+                ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-dd HH:mm");
+                */
+                var campanhas = _campanhaService.FindAllUser(Convert.ToInt32(sessao));
+                var votos = await _votosService.FindAllAsync(camId, autoavaliacao, minDate, maxDate, Convert.ToInt32(sessao));
+                var mediaVotos = _votosService.GetMediaVotos(votos);
+                var viewModel = new VotoFormViewModel { Campanhas = campanhas, Votos = votos, MediaVotos = mediaVotos};                
+                return View(viewModel);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
     }
 }
