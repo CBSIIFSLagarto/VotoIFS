@@ -14,7 +14,7 @@ namespace Nota2.Models
         [Key]
         public int CamID { get; set; }
 
-        [Display(Name = "Chave de acesso:")]
+        [Display(Name = "Chave de acesso")]
         //[Required(ErrorMessage = "Chave de acesso é obrigatória", AllowEmptyStrings = false)]
         [StringLength(20, MinimumLength = 4)]
         public String Chave {
@@ -37,21 +37,21 @@ namespace Nota2.Models
             }
         }
 
-        [Display(Name = "Descrição:")]
+        [Display(Name = "Descrição")]
         [Required(ErrorMessage = "Descrição é obrigatória", AllowEmptyStrings = false)]
         [StringLength(255, MinimumLength = 4)]
         public String Descricao { get; set; }
 
-        [Display(Name = "Data/Hora Inicio:")]
+        [Display(Name = "Data/Hora Inicio")]
         [Required(ErrorMessage = "Data/Hora do inicio é obrigatória", AllowEmptyStrings = false)]
         public DateTime DataHoraInicio { get; set; }
 
-        [Display(Name = "Data/Hora Fim:")]
+        [Display(Name = "Data/Hora Fim")]
         [Required(ErrorMessage = "Data/Hora do fim é obrigatória", AllowEmptyStrings = false)]                
         public DateTime DataHoraFim { get; set; }
 
         [DefaultValue(true)]
-        [Display(Name = "Auto Avaliação:")]        
+        [Display(Name = "Autoavaliação")]
         public bool AutoAvaliacao { get; set; }
         public int UseId { get; set; }
         public Usuario Usuario { get; set; }
