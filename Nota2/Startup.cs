@@ -22,7 +22,7 @@ namespace Nota2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            //PEGA STRING DE CONEX�O
+            //PEGA STRING DE CONEXÃO
             services.AddDbContext<MyContext>(p => p.UseNpgsql(Configuration.GetConnectionString("Matilda")));
             //ATIVA SESSION
             services.AddSession();           
