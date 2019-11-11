@@ -43,10 +43,12 @@ namespace Nota2.Models
         public String Descricao { get; set; }
 
         [Display(Name = "Data/Hora Inicio")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         [Required(ErrorMessage = "Data/Hora do inicio é obrigatória", AllowEmptyStrings = false)]
         public DateTime DataHoraInicio { get; set; }
 
         [Display(Name = "Data/Hora Fim")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         [Required(ErrorMessage = "Data/Hora do fim é obrigatória", AllowEmptyStrings = false)]                
         public DateTime DataHoraFim { get; set; }
 

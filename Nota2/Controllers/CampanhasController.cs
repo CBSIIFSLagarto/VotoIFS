@@ -238,7 +238,7 @@ namespace Nota2.Controllers
                 var campanhas = _campanhaService.FindAllUser(Convert.ToInt32(sessao));
                 var votos = await _votosService.FindAllAsync(camId, autoavaliacao, minDate, maxDate, Convert.ToInt32(sessao));
                 var mediaVotos = _votosService.GetMediaVotos(votos);
-                var viewModel = new VotoFormViewModel { Campanhas = campanhas, Votos = votos, MediaVotos = mediaVotos};                
+                var viewModel = new RelatorioViewModel { Campanhas = campanhas, Votos = votos, MediaVotos = mediaVotos};                
                 return View(viewModel);
             }
             else

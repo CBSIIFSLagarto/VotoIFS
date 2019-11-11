@@ -1,4 +1,4 @@
-﻿@model Nota2.ModelsView.VotoFormViewModel
+﻿@model Nota2.ModelsView.RelatorioViewModel
 
 @{
     ViewData["Title"] = "Relatório de Votos";
@@ -48,16 +48,16 @@
             <thead>
                 <tr class="success">
                     <th>
-                        @Html.DisplayNameFor(model => model.Voto.Campanha.Descricao)
+                        Campanha
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voto.DataVoto)
+                        Data do Voto
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voto.Nota)
+                        Nota
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voto.Comentario)
+                        Comentário
                     </th>
                 </tr>
             </thead>

@@ -36,7 +36,7 @@ namespace Nota2.Services
             {
                 result = result.Where(x => x.DataVoto <= maxDate.Value);
             }
-            return await result.Include(x => x.Campanha).Where(x => x.Campanha.UseId == userId).OrderByDescending(x => x.DataVoto).ToListAsync();
+            return await result.Include(x => x.Campanha).Where(x => x.Campanha.UseId == userId).OrderBy(x => x.Campanha.Descricao).ToListAsync();
         }
 
         public double GetMediaVotos(List<Voto> votos)

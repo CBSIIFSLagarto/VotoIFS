@@ -15,6 +15,7 @@ namespace Nota2.Models
         public string Comentario { get; set; }
         public int CamId { get; set; }
         [Display(Name = "Data do Voto")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public DateTime DataVoto { get; set; }
         public Campanha Campanha { get; set; }
     }
