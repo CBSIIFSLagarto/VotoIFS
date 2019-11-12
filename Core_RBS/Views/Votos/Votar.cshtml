@@ -1,0 +1,65 @@
+﻿@model Core_RBS.Models.Voto
+
+@{
+    ViewData["Title"] = "Votar";
+}
+<style>
+    .estrelas input[type=radio] {
+    display: none;
+}
+
+.estrelas label i.fa:before {
+    content: '\f005';
+    color: #FC0;
+}
+
+.estrelas input[type=radio]:checked ~ label i.fa:before {
+    color: #CCC;
+}
+</style>
+<h1>Novo</h1>
+
+<h4>Voto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Votar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+            <div class="form-group">
+                <div class="estrelas">
+                    <input asp-for="Nota" type="radio" id="cm_star-empty" value="" checked />
+                    <label for="cm_star-1"><i class="fa"></i></label>
+                    <input asp-for="Nota" type="radio" id="cm_star-1" value="1" />
+                    <label for="cm_star-2"><i class="fa"></i></label>
+                    <input asp-for="Nota" type="radio" id="cm_star-2" value="2" />
+                    <label for="cm_star-3"><i class="fa"></i></label>
+                    <input asp-for="Nota" type="radio" id="cm_star-3" value="3" />
+                    <label for="cm_star-4"><i class="fa"></i></label>
+                    <input asp-for="Nota" type="radio" id="cm_star-4" value="4" />
+                    <label for="cm_star-5"><i class="fa"></i></label>
+                    <input asp-for="Nota" type="radio" id="cm_star-5" value="5" />
+                </div>
+            </div>
+                <!--
+    <div class="form-group">
+        <label asp-for="Nota" class="control-label"></label>
+        <input asp-for="Nota" class="form-control" />
+        <span asp-validation-for="Nota" class="text-danger"></span>
+    </div>
+    -->
+                <div class="form-group">
+                    <label asp-for="Comentario" class="control-label"></label>
+                    <textarea asp-for="Comentario" class="form-control"></textarea>
+                    <span asp-validation-for="Comentario" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Votar" class="btn btn-primary" />
+                </div>
+</form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
