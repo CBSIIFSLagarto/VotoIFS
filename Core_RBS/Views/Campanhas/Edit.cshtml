@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Http
+@model Core_RBS.Models.Campanha
+
+@{
+    ViewData["Title"] = "Editar";
+}
+
+<h1>Editar</h1>
+
+<h4>Campanha</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
+            <input type="hidden" asp-for="CamID" />
+            <div class="form-group">
+                <label asp-for="Chave" class="control-label"></label>
+                <input asp-for="Chave" class="form-control" />
+                <span asp-validation-for="Chave" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataHoraInicio" class="control-label"></label>
+                <input asp-for="DataHoraInicio" class="form-control" />
+                <span asp-validation-for="DataHoraInicio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataHoraFim" class="control-label"></label>
+                <input asp-for="DataHoraFim" class="form-control" />
+                <span asp-validation-for="DataHoraFim" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="AutoAvaliacao" /> @Html.DisplayNameFor(model => model.AutoAvaliacao)
+                </label>
+            </div>
+            <!--
+            <div class="form-group">
+                <label asp-for="UseId" class="control-label"></label>
+                <select asp-for="UseId" class="form-control" asp-items="ViewBag.UseId"></select>
+                <span asp-validation-for="UseId" class="text-danger"></span>
+            </div>
+                -->
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
