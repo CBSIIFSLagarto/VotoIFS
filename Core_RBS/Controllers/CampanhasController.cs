@@ -1,15 +1,15 @@
-﻿using Core_RBS.Data;
-using Core_RBS.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Core_RBS.Data;
+using Core_RBS.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.IO;
 using QRCoder;
-using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using System;
 
 namespace Core_RBS.Controllers
 {
@@ -27,7 +27,7 @@ namespace Core_RBS.Controllers
         public async Task<IActionResult> Index()
         {
             var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-            return View(await _context.Campanhas.Where(p => p.Usuario.UserName == usuario.UserName).ToListAsync());
+            return View(await _context.Campanhas.Where(p => p.IdentityUser.UserName == usuario.UserName).ToListAsync()); 
         }
 
         // GET: Campanhas/Details/5
@@ -39,12 +39,12 @@ namespace Core_RBS.Controllers
             }
             var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
             var campanha = await _context.Campanhas
-                .FirstOrDefaultAsync(m => m.CamID == id && m.Usuario.Id == usuario.Id);
+                .FirstOrDefaultAsync(m => m.CamID == id && m.IdentityUser.Id == usuario.Id);
             if (campanha == null)
             {
                 return NotFound();
             }
-
+            
             using (MemoryStream ms = new MemoryStream())
             {
                 string url = HttpContext.Request.Host.Value + "/Votos/Votar/" + campanha.Chave;
@@ -78,7 +78,7 @@ namespace Core_RBS.Controllers
             if (ModelState.IsValid)
             {
                 var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-                campanha.Usuario = usuario;
+                campanha.IdentityUser = usuario;
                 _context.Add(campanha);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -95,7 +95,7 @@ namespace Core_RBS.Controllers
             }
 
             var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-            var campanha = await _context.Campanhas.FirstOrDefaultAsync(p => p.CamID == id && p.Usuario.Id == usuario.Id);
+            var campanha = await _context.Campanhas.FirstOrDefaultAsync(p => p.CamID == id && p.IdentityUser.Id == usuario.Id);
             if (campanha == null)
             {
                 return NotFound();
@@ -146,7 +146,7 @@ namespace Core_RBS.Controllers
                 return NotFound();
             }
             var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-            var campanha = await _context.Campanhas.FirstOrDefaultAsync(m => m.CamID == id || m.Usuario.Id == usuario.Id);
+            var campanha = await _context.Campanhas.FirstOrDefaultAsync(m => m.CamID == id || m.IdentityUser.Id == usuario.Id);
             if (campanha == null)
             {
                 return NotFound();

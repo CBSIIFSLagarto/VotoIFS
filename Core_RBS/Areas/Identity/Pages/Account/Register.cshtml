@@ -14,11 +14,6 @@
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.Nome"></label>
-                <input asp-for="Input.Nome" class="form-control" />
-                <span asp-validation-for="Input.Nome" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
@@ -34,9 +29,9 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-group">    
-                <label asp-for="Input.Grupo"></label>      
-                <select asp-for="Input.Grupo" class="form-control" asp-items='new SelectList(roles,"Id","Name")'></select>    
-                <span asp-validation-for="Input.Grupo" class="text-danger"></span>   
+                <label asp-for="Input.Name"></label>      
+                <select asp-for="Input.Name" class="form-control" asp-items='new SelectList(roles,"Id","Name")'></select>    
+                <span asp-validation-for="Input.Name" class="text-danger"></span>   
             </div>
             <button type="submit" class="btn btn-primary">Regitrar</button>
         </form>

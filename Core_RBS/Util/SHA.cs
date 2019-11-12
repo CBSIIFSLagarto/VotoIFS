@@ -1,5 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System;
 using System.Text;
+using System.Security.Cryptography;
 
 namespace Core_RBS.Util
 {

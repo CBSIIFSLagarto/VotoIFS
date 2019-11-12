@@ -1,5 +1,4 @@
-﻿@using Core_RBS.Models;
-@inject SignInManager<Usuario> SignInManager
+﻿@inject SignInManager<IdentityUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

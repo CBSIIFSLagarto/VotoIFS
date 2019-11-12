@@ -1,32 +1,36 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Core_RBS.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core_RBS.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;using Core_RBS.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Core_RBS.Controllers
 {
     [Authorize(Policy = "Administrador")]
     public class UserController : Controller
     {
+        
         private readonly UserManager<Usuario> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;        
-        public UserController(UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly SignInManager<Usuario> _signInManager;
+
+        public UserController(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
-
+            _signInManager = signInManager;
         }
         // GET: Campanhas        
         public IActionResult Index()
         {
-            var users = _userManager.Users.ToList();
+            var users = _userManager.Users.ToList();            
             return View(users);
         }
         public async Task<IActionResult> Reset(string id)
         {
-            Usuario user = await _userManager.FindByNameAsync(id);
+            Usuario user = await _userManager.FindByNameAsync(id);                        
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var result = await _userManager.ResetPasswordAsync(user, token, "ifs@123");
             if (result.Succeeded)
@@ -37,43 +41,7 @@ namespace Core_RBS.Controllers
             {
                 TempData["Success"] = "Ocorreu algum erro, entrar contato com administrador.";
             }
-
-            return RedirectToAction("Index", "User");
-        }
-        public async Task<IActionResult> RoleUpdate(string id)
-        {
-            Usuario user = await _userManager.FindByNameAsync(id);
-            var role = _roleManager.FindByNameAsync("Administrador").Result;
-            if (role != null)
-            {
-                IdentityResult result;
-                var isAdmin = await _userManager.IsInRoleAsync(user, role.Name);
-                if (isAdmin)
-                {
-                    result = await _userManager.RemoveFromRoleAsync(user, role.Name);
-                    if (result.Succeeded)
-                    {
-                        TempData["Success"] = "Você removeu o usuário "+ user.Nome +" do grupo de "+role.Name;
-                    }
-                    else
-                    {
-                        TempData["Success"] = "Ocorreu algum erro, entrar contato com administrador.";
-                    }
-                }
-                else
-                {
-                    result = await _userManager.AddToRoleAsync(user, role.Name);
-                    if (result.Succeeded)
-                    {
-                        TempData["Success"] = "Você adicionou o usuário " + user.Nome + " ao grupo de " + role.Name;
-                    }
-                    else
-                    {
-                        TempData["Success"] = "Ocorreu algum erro, entrar contato com administrador.";
-                    }
-                }
-            }
-
+            
             return RedirectToAction("Index", "User");
         }
     }
