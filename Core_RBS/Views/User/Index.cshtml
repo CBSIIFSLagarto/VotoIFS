@@ -1,5 +1,4 @@
-﻿
-@model IEnumerable<Core_RBS.Models.Usuario>
+﻿@model IEnumerable<Core_RBS.Models.Usuario>
 @{
     ViewData["Title"] = "Usuários";
 }
@@ -28,20 +27,23 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                <a asp-action="Reset" asp-route-id="@item.UserName">Reiniciar Senha</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <a asp-action="Reset" asp-route-id="@item.UserName">Reiniciar Senha |</a>
+                    <a asp-action="RoleUpdate" asp-route-id="@item.UserName">Add/Del Admin</a>
+
+</td>
+
+</tr>
         }
     </tbody>
 </table>
