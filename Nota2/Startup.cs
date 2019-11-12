@@ -23,12 +23,16 @@ namespace Nota2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            //PEGA STRING DE CONEX�O
-            services.AddDbContext<MyContext>(p => p.UseSqlServer(Configuration.GetConnectionString("ConnectionMyPc")));
-
+            if ( ! string.IsNullOrEmpty(Configuration.GetConnectionString("UsePostgres")) ) {
+            //PEGA STRING DE CONEXÃO
+            services.AddDbContext<MyContext>(p => p.UseNpgsql(Configuration.GetConnectionString("Matilda")));
+            } else {
+              //PEGA STRING DE CONEXÃO  
+             services.AddDbContext<MyContext>(p => p.UseSqlServer(Configuration.GetConnectionString("ConnectionMyPc")));
+            }
             services.AddScoped<VotosService>();
             services.AddScoped<CampanhaService>();
-
+          
             //ATIVA SESSION
             services.AddSession();           
         }

@@ -59,25 +59,36 @@ namespace Nota2.Controllers
                 Campanha campanha = _context.Campanhas.Where(p => p.Chave == id).FirstOrDefault();
                 if (campanha != null)
                 {
-                    voto.CamId = campanha.CamID;
-
-                    var chave = SHA.GenerateSHA256String(Convert.ToString(voto.CamId));
-                    var valor = SHA.GenerateSHA256String(Convert.ToString(voto.Nota));
-                    //PEGANDO COOKIE
-                    string cookieValueFromReq = Request.Cookies[chave];
-
-                    if (cookieValueFromReq == null)
+                    if(DateTime.Compare(DateTime.Now, campanha.DataHoraFim) < 0) 
                     {
-                        //GERANDO COOKIE
-                        this.Set(chave, valor, 5);
-                        voto.DataVoto = DateTime.Now;
-                        _context.Add(voto);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
+                        voto.CamId = campanha.CamID;
+
+                        var chave = SHA.GenerateSHA256String(Convert.ToString(voto.CamId));
+                        var valor = SHA.GenerateSHA256String(Convert.ToString(voto.Nota));
+                        //PEGANDO COOKIE
+                        string cookieValueFromReq = Request.Cookies[chave];
+
+                        if (cookieValueFromReq == null)
+                        {
+                            //GERANDO COOKIE
+                            this.Set(chave, valor, 5);
+                            voto.DataVoto = DateTime.Now;
+                            _context.Add(voto);
+                            await _context.SaveChangesAsync();
+                            return RedirectToAction(nameof(Index));
+                        }
+                        else
+                        {
+                            return RedirectToAction(nameof(Index));
+                        }
+                    } 
+                    else 
                     {
-                        return RedirectToAction(nameof(Index));
+                        var viewModel = new VotoFormViewModel { 
+                            Campanha = campanha,
+                            Error = "O período de votação dessa campanha expirou"
+                        };
+                        return View(viewModel);
                     }
                 }
                 else
