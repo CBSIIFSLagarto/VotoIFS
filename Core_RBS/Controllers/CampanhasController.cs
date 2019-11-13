@@ -3,8 +3,10 @@ using Core_RBS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Nota2.ModelsView;
 using QRCoder;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -172,34 +174,68 @@ namespace Core_RBS.Controllers
         }
 
 
-        public async Task<IActionResult> VotosCampanha(int camId, int autoavaliacao, DateTime? minDate, DateTime? maxDate)
+        public async Task<IActionResult> RelatorioVotos(int camId, int autoavaliacao, DateTime? minDate, DateTime? maxDate)
         {
-            var sessao = HttpContext.Session.GetString(SessionKeyId);
-            if (sessao != null)
+            var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
+            /*
+            if (!minDate.HasValue)
             {
-                /*
-                if (!minDate.HasValue)
-                {
-                    minDate = DateTime.Now;
-                }
-                if (!maxDate.HasValue)
-                {
-                    maxDate = DateTime.Now;
-                }
-                ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-dd HH:mm");
-                ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-dd HH:mm");
-                */
-                var campanhas = _campanhaService.FindAllUser(Convert.ToInt32(sessao));
-                var votos = await _votosService.FindAllAsync(camId, autoavaliacao, minDate, maxDate, Convert.ToInt32(sessao));
-                var mediaVotos = _votosService.GetMediaVotos(votos);
-                var viewModel = new RelatorioViewModel { Campanhas = campanhas, Votos = votos, MediaVotos = mediaVotos};                
-                return View(viewModel);
+                minDate = DateTime.Now;
             }
-            else
+            if (!maxDate.HasValue)
             {
-                return RedirectToAction("Index", "Login");
+                maxDate = DateTime.Now;
             }
+            ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-dd HH:mm");
+            ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-dd HH:mm");
+            */
+            var campanhas = FindAllUser(usuario.Id);
+            var votos = await FindAllAsync(camId, autoavaliacao, minDate, maxDate, usuario.Id);
+            var mediaVotos = GetMediaVotos(votos);
+            var viewModel = new RelatorioViewModel { Campanhas = campanhas, Votos = votos, MediaVotos = mediaVotos};
+            return View(viewModel);
         }
+        public List<Campanha> FindAllUser(string userId)
+        {
+            return _context.Campanhas.Include(c => c.Usuario).Where(obj => obj.Usuario.Id == userId).OrderBy(x => x.Descricao).ToList();
+        }
+        public async Task<List<Voto>> FindAllAsync(int camId, int autoavaliacao, DateTime? minDate, DateTime? maxDate, string userId)
+        {
+            var result = from obj in _context.Votos select obj;
+            if (camId > 0)
+            {
+                result = result.Where(x => x.CamId == camId);
+            }
+            if (autoavaliacao > 0)
+            {
+                result = result.Include(x => x.Campanha).Where(x => x.Campanha.AutoAvaliacao == true);
+            }
+            if (minDate.HasValue)
+            {
+                result = result.Where(x => x.DataVoto >= minDate.Value);
+            }
+            if (maxDate.HasValue)
+            {
+                result = result.Where(x => x.DataVoto <= maxDate.Value);
+            }
 
+            return await result.Include(x => x.Campanha).Include(x => x.Campanha.Usuario).Where(x => x.Campanha.Usuario.Id == userId).OrderByDescending(x => x.DataVoto).ToListAsync();
+
+        }
+        public double GetMediaVotos(List<Voto> votos)
+        {
+            var soma = 0.0;
+            var qtd = 0.0;
+            foreach (var item in votos)
+            {
+                soma += item.Nota;
+                qtd++;
+            }
+            if (qtd <= 0)
+            {
+                return 0;
+            }
+            return soma / qtd;
+        }
     }
 }
