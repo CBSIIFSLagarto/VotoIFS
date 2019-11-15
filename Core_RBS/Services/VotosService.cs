@@ -36,7 +36,9 @@ namespace Core_RBS.Services
             {
                 result = result.Where(x => x.DataVoto <= maxDate.Value);
             }
+
             return await result.Include(x => x.Campanha).Include(x => x.Campanha.Usuario) .Where(x => x.Campanha.Usuario.Id == userId).OrderByDescending(x => x.DataVoto).ToListAsync();
+
         }
 
         public double GetMediaVotos(List<Voto> votos)

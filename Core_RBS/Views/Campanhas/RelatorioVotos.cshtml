@@ -1,4 +1,4 @@
-﻿@model Nota2.ModelsView.VotoFormViewModel
+﻿@model Nota2.ModelsView.RelatorioViewModel
 
 @{
     ViewData["Title"] = "Relatório de Votos";
@@ -8,7 +8,7 @@
 
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <form class="navbar-form navbar-left" role="search" asp-action="VotosCampanha">
+        <form class="navbar-form navbar-left" role="search" asp-action="RelatorioVotos">
             <div class="form-row align-items-center">
                 <div class="form-group col-md-auto">
                     <label for="minDate">Campanha:</label>
@@ -48,16 +48,16 @@
             <thead>
                 <tr class="success">
                     <th>
-                        @Html.DisplayNameFor(model => model.Voto.Campanha.Descricao)
+                        Campanha
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voto.DataVoto)
+                        Data do Voto
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voto.Nota)
+                        Nota
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voto.Comentario)
+                        Comentário
                     </th>
                 </tr>
             </thead>
