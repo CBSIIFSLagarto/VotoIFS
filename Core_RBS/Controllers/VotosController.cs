@@ -1,6 +1,7 @@
 ﻿using Core_RBS.Data;
 using Core_RBS.Models;
 using Core_RBS.Util;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -29,6 +30,7 @@ namespace Core_RBS.Controllers
             var campanha = _context.Campanhas.Where(p => p.Chave.Equals(id) && DateTime.Compare(p.DataHoraInicio, DateTime.Now) <= 0 && DateTime.Compare(p.DataHoraFim, DateTime.Now) >= 0).FirstOrDefault();
             if (campanha != null)
             {
+                ViewBag.CampanhaDescricao = campanha.Descricao;
                 return View();
             }
             else
@@ -85,6 +87,23 @@ namespace Core_RBS.Controllers
             }
             ViewData["CamId"] = new SelectList(_context.Campanhas, "CamID", "Chave", voto.CamId);
             return View(voto);
+        }
+
+        [Authorize(Policy = "Professor")]
+        public IActionResult VotosPorCampanha(int id)
+        {
+            ViewBag.DescricaoCampanha = _context.Campanhas.Where(p => p.CamID == id).FirstOrDefault().Descricao;
+            var votos = _context.Votos.Where(p => p.CamId == id).ToList();
+            if (votos.Count != 0)
+            {
+                ViewBag.Media = Math.Round(votos.Sum(p => p.Nota) / (double)votos.Count, 2);
+            }
+            else
+            {
+                ViewBag.Media = 0;
+            }
+            
+            return View(votos);
         }
 
         private bool VotoExists(long id)

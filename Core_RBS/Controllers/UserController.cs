@@ -4,6 +4,7 @@ using Core_RBS.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Core_RBS.Controllers
 {
@@ -19,10 +20,18 @@ namespace Core_RBS.Controllers
 
         }
         // GET: Campanhas        
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
             var users = _userManager.Users.ToList();
-            return View(users);
+            List<Usuario> novaLista = new List<Usuario>();
+            foreach (var item in users)
+            {
+                var isAdmin = await _userManager.IsInRoleAsync(item, "Administrador");
+                item.IsAdmin = isAdmin;
+                novaLista.Add(item);
+            }
+
+            return View(novaLista);
         }
         public async Task<IActionResult> Reset(string id)
         {

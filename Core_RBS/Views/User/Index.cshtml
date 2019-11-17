@@ -39,7 +39,16 @@
                 </td>
                 <td>
                     <a asp-action="Reset" asp-route-id="@item.UserName">Reiniciar Senha |</a>
-                    <a asp-action="RoleUpdate" asp-route-id="@item.UserName">Add/Del Admin</a>
+                    <a asp-action="RoleUpdate" asp-route-id="@item.UserName">
+                        @if (item.IsAdmin)
+                        {
+                            <span>Remover Admin</span>
+                        }
+                        else
+                        {
+                            <span>Add Admin</span>
+                        }
+                    </a>
 
 </td>
 

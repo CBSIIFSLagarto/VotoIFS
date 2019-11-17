@@ -23,7 +23,10 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Campanhas" asp-action="index">Campanha |</a>
                 </li>
-
+                <li class="nav-item">
+                    @*<a class="nav-link text-dark" asp-area="" asp-controller="Relatorios" asp-action="index">Relatório |</a>*@
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Relatorios" asp-action="RelatorioVotos">Relatório |</a>
+                </li>
             }
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Bem Vindo: @User.Identity.Name</a>

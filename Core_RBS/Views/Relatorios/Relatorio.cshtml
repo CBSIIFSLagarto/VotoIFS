@@ -1,0 +1,48 @@
+﻿@model Core_RBS.ModelsViews.Relatorio
+@{
+    ViewData["Title"] = "Relatorio";
+}
+
+<h1>Relatorio</h1>
+<table class="table">
+    @foreach (var campanha in Model.Campanha)
+    {
+        <thead>
+            <tr>
+                <th>@campanha.Descricao</th>
+                <th>@campanha.DataHoraFim - @campanha.DataHoraFim</th>
+                <th>
+                    Media:
+                    @if (campanha.Votos.Count > 0)
+                    {
+                        <span>@Math.Round(campanha.Votos.Sum(p => p.Nota) / (double)campanha.Votos.Count, 2)</span>
+                    }
+                    else
+                    {
+                        <span>0</span>
+                    }
+
+                </th>
+            </tr>
+        </thead>
+        foreach (var voto in campanha.Votos)
+        {
+            <tbody>
+                <tr>
+                    <td>
+                        @voto.Nota
+                    </td>
+                    <td>
+                        @voto.DataVoto
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        }
+    }  
+    <tr>
+        <td></td>
+        <td></td>
+        <td>Media Geral: @ViewBag.MediaGeral</td>
+    </tr>
+</table>
