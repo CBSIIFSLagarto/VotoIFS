@@ -9,6 +9,7 @@ namespace Core_RBS.ModelsView
 {
     public class RelatorioViewModel
     {
+        public string AutoAvaliacaoChecked { get; set; }
         public DateTime? DataInicio { get; set; }
         public DateTime? DataFim { get; set; }
         public ICollection<Campanha> Campanhas { get; set; }

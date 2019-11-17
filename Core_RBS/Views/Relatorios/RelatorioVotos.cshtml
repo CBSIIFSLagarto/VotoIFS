@@ -14,12 +14,10 @@
                     <div class="row">
                         <div class="col">
                             <label for="minDate">Campanha:</label>
-                            <select name="camId" asp-items="@(new SelectList(Model.ListCampanhas,"CamID","Descricao"))" class="form-control">
-                                <option value="0">TODAS</option>
-                            </select>
+                            @Html.DropDownList("camId", new SelectList(Model.ListCampanhas, "CamID", "Descricao"), "TODAS", new { @class = "form-control" })
                         </div>
                         <div class="col">
-                            <input class="form-check-input" type="checkbox" value="1" name="autoavaliacao" checked>
+                            <input class="form-check-input" type="checkbox" value="1" name="autoavaliacao" @Model.AutoAvaliacaoChecked>
                             <label class="form-check-label" for="autoavaliacao">Autoavaliação</label>                          
                         </div>
                     </div>
@@ -28,10 +26,10 @@
                     <label for="minDate">Período:</label>
                     <div class="row">
                         <div class="col">
-                            <input type="datetime-local" class="form-control" name="minDate" value=@Model.DataInicio />
+                            <input type="datetime-local" class="form-control" name="minDate" value=@ViewData["minDate"] />
                         </div>
                         <div class="col">
-                            <input type="datetime-local" class="form-control" name="maxDate" value=@Model.DataFim />
+                            <input type="datetime-local" class="form-control" name="maxDate" value=@ViewData["maxDate"] />
                         </div>
                         <div class="col">
                             <button type="submit" class="btn btn-primary">Filtrar</button>

@@ -67,10 +67,22 @@ namespace Core_RBS.Controllers
         [HttpPost]
         public async Task<IActionResult> RelatorioVotos(int camId, int autoavaliacao, DateTime? minDate, DateTime? maxDate)
         {
-
+            if (minDate.HasValue)
+            {
+                ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-ddTHH:mm");
+            }
+            if (maxDate.HasValue)
+            {
+                ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-ddTHH:mm");
+            }
+            string autoAvaliacaoChecked = "";
+            if (autoavaliacao == 1)
+            {
+                autoAvaliacaoChecked = "checked";
+            }
             var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
             var campanhas = FindAllAsync(camId, autoavaliacao, minDate, maxDate);                        
-            var viewModel = new RelatorioViewModel { Campanhas = campanhas, ListCampanhas = _context.Campanhas.Where(c => c.Usuario.Id == usuario.Id).ToList()};
+            var viewModel = new RelatorioViewModel { Campanhas = campanhas, ListCampanhas = _context.Campanhas.Where(c => c.Usuario.Id == usuario.Id).ToList(), AutoAvaliacaoChecked = autoAvaliacaoChecked };
             return View(viewModel);
         }
 
