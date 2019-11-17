@@ -81,7 +81,7 @@ namespace Core_RBS.Controllers
                         string cookieValueFromReq = Request.Cookies[chave];
 
                         msg = "Voto registrado com sucesso!";
-
+                        ViewBag.MSG = msg;
                         if (cookieValueFromReq == null)
                         {
                             //GERANDO COOKIE
