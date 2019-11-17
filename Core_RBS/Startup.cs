@@ -1,12 +1,12 @@
 using Core_RBS.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;using Core_RBS.Models;
+using Microsoft.AspNetCore.Identity;
+using Core_RBS.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Core_RBS.Services;
 
 namespace Core_RBS
 {
@@ -24,13 +24,10 @@ namespace Core_RBS
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("ConnectionWork")));
+                    Configuration.GetConnectionString("ConnectionMyPc")));
             //services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddIdentity<Usuario, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             services.AddControllersWithViews();
-          
-            //ATIVA SESSION
-            services.AddSession();           
             services.AddRazorPages();
 
 
@@ -76,9 +73,6 @@ namespace Core_RBS
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "areas",
-                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

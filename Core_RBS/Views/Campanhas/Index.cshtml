@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Core_RBS.Models.Campanha>
+﻿@model Core_RBS.Util.PaginatedList<Core_RBS.Models.Campanha>
+
 
 @{
     ViewData["Title"] = "Campanha";
@@ -9,23 +10,41 @@
 <p>
     <a asp-action="Create">Nova Campanha</a>
 </p>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Pesquisar: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            <input type="submit" value="Pesquisar" class="btn btn-primary" /> |
+            <a asp-action="Index">Voltar lista</a>
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
+            <th></th>
             <th>
-                @Html.DisplayNameFor(model => model.Chave)
+                @*@Html.DisplayNameFor(model => model.Chave)*@
+                Chave Acesso
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Descricao)
+                @*<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Descricao)</a>*@
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Descrição</a>
+
+                @*@Html.DisplayNameFor(model => model.Descricao)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DataHoraInicio)
+                @*<a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.DataHoraInicio)</a>*@
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Data/Hora Início</a>
+
+                @*@Html.DisplayNameFor(model => model.DataHoraInicio)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DataHoraFim)
+                @*@Html.DisplayNameFor(model => model.DataHoraFim)*@
+                Data/Hora Fim
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AutoAvaliacao)
+
             </th>
             <th></th>
         </tr>
@@ -34,6 +53,22 @@
         @foreach (var item in Model)
         {
             <tr>
+                @if (DateTime.Compare(item.DataHoraFim, DateTime.Now) > 0)
+                {
+                    if (DateTime.Compare(item.DataHoraInicio, DateTime.Now) > 0)
+                    {
+                        <td style="background-color:yellow"></td>
+                    }
+                    else
+                    {
+                        <td style="background-color:lightgreen"></td>
+                    }
+
+                }
+                else
+                {
+                    <td style="background-color:indianred"></td>
+                }
                 <td>
                     @Html.DisplayFor(modelItem => item.Chave)
                 </td>
@@ -50,12 +85,32 @@
                     @Html.DisplayFor(modelItem => item.AutoAvaliacao)
                 </td>
                 <td>
-                    <a asp-area="Voto" asp-controller="Votos" asp-action="Votar" asp-route-id="@item.Chave">URL</a> |
-                    <a asp-action="Edit" asp-route-id="@item.CamID">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@item.CamID">Detalhes</a> |
-                    <a asp-action="Delete" asp-route-id="@item.CamID">Deletar</a>
+                    <a asp-controller="Votos" asp-action="Votar" asp-route-id="@item.Chave" title="URL Campanha"><img src="~/img/baseline_link_black_18dp.png" /></a> |
+                    <a asp-controller="Votos" asp-action="VotosPorCampanha" asp-route-id="@item.CamID" title="Ver votos"><img src="~/img/baseline_details_black_18dp.png" /></a> |
+                    <a asp-action="Edit" asp-route-id="@item.CamID" title="Editar Campanha"><img src="~/img/baseline_edit_black_18dp.png" /></a> |
+                    <a asp-action="Details" asp-route-id="@item.CamID" title="Detalhes"><img src="~/img/baseline_receipt_black_18dp.png" /></a> |
+                    <a asp-action="Delete" asp-route-id="@item.CamID" title="Deletar"><img src="~/img/baseline_delete_black_18dp.png" /></a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Voltar
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Próximo
+</a>
