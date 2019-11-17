@@ -94,9 +94,9 @@ namespace Core_RBS.Controllers
             {
                 result = result.Where(p => p.CamID == camId);
             }
-            if (autoavaliacao == 0)
+            if (autoavaliacao > 0)
             {
-                result = result.Where(p => !p.AutoAvaliacao);
+                result = result.Where(p => p.AutoAvaliacao);
             }
             if (minDate.HasValue)
             {
