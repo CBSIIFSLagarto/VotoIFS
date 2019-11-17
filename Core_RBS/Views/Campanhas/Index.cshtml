@@ -85,7 +85,7 @@
                     @Html.DisplayFor(modelItem => item.AutoAvaliacao)
                 </td>
                 <td>
-                    <a asp-controller="Votos" asp-action="Votar" asp-route-id="@item.Chave" title="URL Campanha"><img src="~/img/baseline_link_black_18dp.png" /></a> |
+                    <a asp-controller="Votos" asp-action="Votar" asp-route-id="@item.Chave" title="URL Campanha" target="_blank"><img src="~/img/baseline_link_black_18dp.png" /></a> |
                     <a asp-controller="Votos" asp-action="VotosPorCampanha" asp-route-id="@item.CamID" title="Ver votos"><img src="~/img/baseline_details_black_18dp.png" /></a> |
                     <a asp-action="Edit" asp-route-id="@item.CamID" title="Editar Campanha"><img src="~/img/baseline_edit_black_18dp.png" /></a> |
                     <a asp-action="Details" asp-route-id="@item.CamID" title="Detalhes"><img src="~/img/baseline_receipt_black_18dp.png" /></a> |

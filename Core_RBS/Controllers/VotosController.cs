@@ -27,19 +27,36 @@ namespace Core_RBS.Controllers
         // GET: Votoes/Votar
         public IActionResult Votar(string id)
         {
-            var campanha = _context.Campanhas.Where(p => p.Chave.Equals(id) && DateTime.Compare(p.DataHoraInicio, DateTime.Now) <= 0 && DateTime.Compare(p.DataHoraFim, DateTime.Now) >= 0).FirstOrDefault();
+            string msg = "";
+            var campanha = _context.Campanhas.Where(p => p.Chave.Equals(id)).FirstOrDefault();
             if (campanha != null)
             {
-                ViewBag.CampanhaDescricao = campanha.Descricao;
-                return View();
+                if (DateTime.Compare(campanha.DataHoraInicio, DateTime.Now) <= 0)
+                {
+                    if (DateTime.Compare(campanha.DataHoraFim, DateTime.Now) >= 0)
+                    {
+                        ViewBag.CampanhaDescricao = campanha.Descricao;
+                        return View();
+                    }
+                    else
+                    {
+                        msg = "A votação encerrou-se às " + campanha.DataHoraFim.ToString("HH:mm") + " do dia " + campanha.DataHoraFim.ToString("dd/MM/yyyy") + ". Não é possível mais votar.";
+                    }
+                }
+                else
+                {
+                    msg = "A votação iniciará às " + campanha.DataHoraInicio.ToString("HH:mm") + " do dia " + campanha.DataHoraInicio.ToString("dd/MM/yyyy") + ". Favor, aguarde.";
+                }
+                
             }
             else
             {
-                string msg = "Essa página ainda não está liberada!";
-                ViewBag.MSG = msg;
-                //return RedirectToAction(nameof(Index));
-                return View("Index");
+                msg = "A chave de acesso informada é inválida!";
+                
             }
+            ViewBag.MSG = msg;
+            //return RedirectToAction(nameof(Index));
+            return View("Index");
         }
         // POST: Votoes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -50,40 +67,48 @@ namespace Core_RBS.Controllers
         {
             if (ModelState.IsValid)
             {
+                string msg = "";
                 Campanha campanha = _context.Campanhas.Where(p => p.Chave == id).FirstOrDefault();
                 if (campanha != null)
                 {
-                    voto.CamId = campanha.CamID;
-
-                    var chave = SHA.GenerateSHA256String(Convert.ToString(voto.CamId));
-                    var valor = SHA.GenerateSHA256String(Convert.ToString(voto.Nota));
-                    //PEGANDO COOKIE
-                    string cookieValueFromReq = Request.Cookies[chave];
-
-                    string msg = "Voto com Sucesso!";
-                    ViewBag.MSG = msg;
-
-                    if (cookieValueFromReq == null)
+                    if (DateTime.Compare(DateTime.Now, campanha.DataHoraFim) < 0)
                     {
-                        //GERANDO COOKIE
-                        this.Set(chave, valor, 10);
-                        voto.DataVoto = DateTime.Now;
-                        _context.Add(voto);
-                        await _context.SaveChangesAsync();
-                        //return RedirectToAction(nameof(Index));
-                        return View("Index");
+                        voto.CamId = campanha.CamID;
+
+                        var chave = SHA.GenerateSHA256String(Convert.ToString(voto.CamId));
+                        var valor = SHA.GenerateSHA256String(Convert.ToString(voto.Nota));
+                        //PEGANDO COOKIE
+                        string cookieValueFromReq = Request.Cookies[chave];
+
+                        msg = "Voto registrado com sucesso!";
+
+                        if (cookieValueFromReq == null)
+                        {
+                            //GERANDO COOKIE
+                            this.Set(chave, valor, 10);
+                            voto.DataVoto = DateTime.Now;
+                            _context.Add(voto);
+                            await _context.SaveChangesAsync();
+                            //return RedirectToAction(nameof(Index));
+                            return View("Index");
+                        }
+                        else
+                        {
+                            //return RedirectToAction(nameof(Index));
+                            return View("Index");
+                        }
                     }
                     else
                     {
-                        //return RedirectToAction(nameof(Index));
-                        return View("Index");
+                        msg = "O período de votação dessa campanha expirou.";
                     }
                 }
                 else
                 {
                     return NotFound();
                 }
-
+                ViewBag.MSG = msg;
+                return View("Index");
             }
             ViewData["CamId"] = new SelectList(_context.Campanhas, "CamID", "Chave", voto.CamId);
             return View(voto);
