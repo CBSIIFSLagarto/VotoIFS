@@ -28,8 +28,6 @@ namespace Core_RBS
             //services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddIdentity<Usuario, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             services.AddControllersWithViews();
-            services.AddScoped<VotosService>();
-            services.AddScoped<CampanhaService>();
           
             //ATIVA SESSION
             services.AddSession();           

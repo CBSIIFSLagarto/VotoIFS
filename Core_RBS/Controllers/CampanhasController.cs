@@ -2,6 +2,7 @@
 using Core_RBS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Nota2.ModelsView;
 using QRCoder;
@@ -176,23 +177,24 @@ namespace Core_RBS.Controllers
 
         public async Task<IActionResult> RelatorioVotos(int camId, int autoavaliacao, DateTime? minDate, DateTime? maxDate)
         {
-            var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-            /*
-            if (!minDate.HasValue)
+            var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);            
+            if (minDate.HasValue)
             {
-                minDate = DateTime.Now;
+                ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-ddTHH:mm");
             }
-            if (!maxDate.HasValue)
+            if (maxDate.HasValue)
             {
-                maxDate = DateTime.Now;
+                ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-ddTHH:mm");
             }
-            ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-dd HH:mm");
-            ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-dd HH:mm");
-            */
+            string autoAvaliacaoChecked = "";
+            if (autoavaliacao == 1)
+            {
+                autoAvaliacaoChecked = "checked";
+            }
             var campanhas = FindAllUser(usuario.Id);
             var votos = await FindAllAsync(camId, autoavaliacao, minDate, maxDate, usuario.Id);
             var mediaVotos = GetMediaVotos(votos);
-            var viewModel = new RelatorioViewModel { Campanhas = campanhas, Votos = votos, MediaVotos = mediaVotos};
+            var viewModel = new RelatorioViewModel { Campanhas = campanhas, Votos = votos, MediaVotos = mediaVotos, AutoAvaliacaoChecked = autoAvaliacaoChecked};
             return View(viewModel);
         }
         public List<Campanha> FindAllUser(string userId)
