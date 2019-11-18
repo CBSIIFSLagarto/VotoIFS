@@ -2,6 +2,7 @@
 using Core_RBS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Nota2.ModelsView;
 using QRCoder;
@@ -12,6 +13,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Core_RBS.Util;
 
 namespace Core_RBS.Controllers
 {
@@ -25,12 +27,55 @@ namespace Core_RBS.Controllers
             _context = context;
         }
 
-        // GET: Campanhas        
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
             var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-            return View(await _context.Campanhas.Where(p => p.Usuario.UserName == usuario.UserName).ToListAsync());
+            var campanhas = from s in _context.Campanhas.Where(p => p.Usuario.UserName == usuario.UserName) select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                campanhas = campanhas.Where(s => s.Descricao.Contains(searchString) || s.Chave.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    campanhas = campanhas.OrderByDescending(s => s.Descricao);
+                    break;
+                case "Date":
+                    campanhas = campanhas.OrderBy(s => s.DataHoraInicio);
+                    break;
+                case "date_desc":
+                    campanhas = campanhas.OrderByDescending(s => s.DataHoraInicio);
+                    break;
+                default:
+                    campanhas = campanhas.OrderByDescending(s => s.DataHoraFim);
+                    break;
+            }
+            int pageSize = 3;
+            return View(await PaginatedList<Campanha>.CreateAsync(campanhas.AsNoTracking(), pageNumber ?? 1, pageSize));            
         }
+
+        // GET: Campanhas        
+        //public async Task<IActionResult> Index(int id)
+        //{            
+        //    var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
+        //    var campanhas = await _context.Campanhas.Where(p => p.Usuario.UserName == usuario.UserName).OrderByDescending(p => p.DataHoraFim).ToListAsync();
+        //    return View(campanhas);
+        //}
 
         // GET: Campanhas/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -78,7 +123,7 @@ namespace Core_RBS.Controllers
         public async Task<IActionResult> Create([Bind("CamID,Chave,Descricao,DataHoraInicio,DataHoraFim,AutoAvaliacao")] Campanha campanha)
         {
             if (ModelState.IsValid)
-            {
+            {                
                 var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
                 campanha.Usuario = usuario;
                 _context.Add(campanha);
@@ -171,71 +216,6 @@ namespace Core_RBS.Controllers
         private bool CampanhaExists(int id)
         {
             return _context.Campanhas.Any(e => e.CamID == id);
-        }
-
-
-        public async Task<IActionResult> RelatorioVotos(int camId, int autoavaliacao, DateTime? minDate, DateTime? maxDate)
-        {
-            var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-            /*
-            if (!minDate.HasValue)
-            {
-                minDate = DateTime.Now;
-            }
-            if (!maxDate.HasValue)
-            {
-                maxDate = DateTime.Now;
-            }
-            ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-dd HH:mm");
-            ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-dd HH:mm");
-            */
-            var campanhas = FindAllUser(usuario.Id);
-            var votos = await FindAllAsync(camId, autoavaliacao, minDate, maxDate, usuario.Id);
-            var mediaVotos = GetMediaVotos(votos);
-            var viewModel = new RelatorioViewModel { Campanhas = campanhas, Votos = votos, MediaVotos = mediaVotos};
-            return View(viewModel);
-        }
-        public List<Campanha> FindAllUser(string userId)
-        {
-            return _context.Campanhas.Include(c => c.Usuario).Where(obj => obj.Usuario.Id == userId).OrderBy(x => x.Descricao).ToList();
-        }
-        public async Task<List<Voto>> FindAllAsync(int camId, int autoavaliacao, DateTime? minDate, DateTime? maxDate, string userId)
-        {
-            var result = from obj in _context.Votos select obj;
-            if (camId > 0)
-            {
-                result = result.Where(x => x.CamId == camId);
-            }
-            if (autoavaliacao > 0)
-            {
-                result = result.Include(x => x.Campanha).Where(x => x.Campanha.AutoAvaliacao == true);
-            }
-            if (minDate.HasValue)
-            {
-                result = result.Where(x => x.DataVoto >= minDate.Value);
-            }
-            if (maxDate.HasValue)
-            {
-                result = result.Where(x => x.DataVoto <= maxDate.Value);
-            }
-
-            return await result.Include(x => x.Campanha).Include(x => x.Campanha.Usuario).Where(x => x.Campanha.Usuario.Id == userId).OrderByDescending(x => x.DataVoto).ToListAsync();
-
-        }
-        public double GetMediaVotos(List<Voto> votos)
-        {
-            var soma = 0.0;
-            var qtd = 0.0;
-            foreach (var item in votos)
-            {
-                soma += item.Nota;
-                qtd++;
-            }
-            if (qtd <= 0)
-            {
-                return 0;
-            }
-            return soma / qtd;
         }
     }
 }
