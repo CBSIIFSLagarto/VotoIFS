@@ -97,15 +97,7 @@ namespace Core_RBS.Controllers
             if (autoavaliacao > 0)
             {
                 result = result.Where(p => p.AutoAvaliacao);
-            }
-            if (minDate.HasValue)
-            {
-                result = result.Where(x => x.DataHoraInicio >= minDate.Value);
-            }
-            if (maxDate.HasValue)
-            {
-                result = result.Where(x => x.DataHoraFim <= maxDate.Value);
-            }
+            }            
             List<Campanha> campanhas = result.ToList();
             List <Campanha> listTemp = new List<Campanha>();           
             int notas = 0;
@@ -113,9 +105,20 @@ namespace Core_RBS.Controllers
             foreach (var campanha in campanhas)
             {
                 campanha.Votos = _context.Votos.Where(p => p.CamId == campanha.CamID).ToList();
+                if (minDate.HasValue)
+                {
+                    campanha.Votos = campanha.Votos.Where(p => p.CamId == campanha.CamID && p.DataVoto >= minDate.Value).ToList();
+                }
+                if (maxDate.HasValue)
+                {
+                    campanha.Votos = campanha.Votos.Where(p => p.CamId == campanha.CamID && p.DataVoto <= maxDate.Value).ToList();
+                }
                 notas += campanha.Votos.Sum(p => p.Nota);
                 cont += campanha.Votos.Count();
-                listTemp.Add(campanha);
+                if(campanha.Votos.Count > 0)
+                {
+                    listTemp.Add(campanha);
+                }
             }
             if (notas == 0)
             {
