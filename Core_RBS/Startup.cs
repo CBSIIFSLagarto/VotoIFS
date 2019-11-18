@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Core_RBS.Services;
 
 namespace Core_RBS
 {
@@ -29,6 +30,8 @@ namespace Core_RBS
             services.AddIdentity<Usuario, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddTransient<IVotosService, VotosService>();
+            services.AddTransient<ICampanhaService, CampanhaService>();
 
 
             services.AddAuthorization(options =>
