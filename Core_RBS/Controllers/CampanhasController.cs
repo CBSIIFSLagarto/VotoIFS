@@ -193,7 +193,7 @@ namespace Core_RBS.Controllers
                 return NotFound();
             }
             var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-            var campanha = await _context.Campanhas.FirstOrDefaultAsync(m => m.CamID == id || m.Usuario.Id == usuario.Id);
+            var campanha = await _context.Campanhas.FirstOrDefaultAsync(m => m.CamID == id && m.Usuario.Id == usuario.Id);
             if (campanha == null)
             {
                 return NotFound();
