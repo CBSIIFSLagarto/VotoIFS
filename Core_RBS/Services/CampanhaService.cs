@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Core_RBS.Services
 {
-    public class CampanhaService
+    public class CampanhaService : ICampanhaService
     {
         private readonly ApplicationDbContext _context;
 

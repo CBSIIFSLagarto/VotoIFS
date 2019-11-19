@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Core_RBS.Services
 {
-    public class VotosService
+    public class VotosService : IVotosService
     {
         private readonly ApplicationDbContext _context;
 
