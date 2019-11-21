@@ -1,15 +1,19 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Core_RBS.Data;
+﻿using Core_RBS.Data;
 using Core_RBS.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.IO;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Nota2.ModelsView;
 using QRCoder;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Core_RBS.Util;
 
 namespace Core_RBS.Controllers
 {
@@ -23,12 +27,55 @@ namespace Core_RBS.Controllers
             _context = context;
         }
 
-        // GET: Campanhas        
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
             var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-            return View(await _context.Campanhas.Where(p => p.IdentityUser.UserName == usuario.UserName).ToListAsync()); 
+            var campanhas = from s in _context.Campanhas.Where(p => p.Usuario.UserName == usuario.UserName) select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                campanhas = campanhas.Where(s => s.Descricao.Contains(searchString) || s.Chave.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    campanhas = campanhas.OrderByDescending(s => s.Descricao);
+                    break;
+                case "Date":
+                    campanhas = campanhas.OrderBy(s => s.DataHoraInicio);
+                    break;
+                case "date_desc":
+                    campanhas = campanhas.OrderByDescending(s => s.DataHoraInicio);
+                    break;
+                default:
+                    campanhas = campanhas.OrderByDescending(s => s.DataHoraFim);
+                    break;
+            }
+            int pageSize = 3;
+            return View(await PaginatedList<Campanha>.CreateAsync(campanhas.AsNoTracking(), pageNumber ?? 1, pageSize));            
         }
+
+        // GET: Campanhas        
+        //public async Task<IActionResult> Index(int id)
+        //{            
+        //    var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
+        //    var campanhas = await _context.Campanhas.Where(p => p.Usuario.UserName == usuario.UserName).OrderByDescending(p => p.DataHoraFim).ToListAsync();
+        //    return View(campanhas);
+        //}
 
         // GET: Campanhas/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -39,12 +86,12 @@ namespace Core_RBS.Controllers
             }
             var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
             var campanha = await _context.Campanhas
-                .FirstOrDefaultAsync(m => m.CamID == id && m.IdentityUser.Id == usuario.Id);
+                .FirstOrDefaultAsync(m => m.CamID == id && m.Usuario.Id == usuario.Id);
             if (campanha == null)
             {
                 return NotFound();
             }
-            
+
             using (MemoryStream ms = new MemoryStream())
             {
                 string url = HttpContext.Request.Host.Value + "/Votos/Votar/" + campanha.Chave;
@@ -76,9 +123,9 @@ namespace Core_RBS.Controllers
         public async Task<IActionResult> Create([Bind("CamID,Chave,Descricao,DataHoraInicio,DataHoraFim,AutoAvaliacao")] Campanha campanha)
         {
             if (ModelState.IsValid)
-            {
+            {                
                 var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-                campanha.IdentityUser = usuario;
+                campanha.Usuario = usuario;
                 _context.Add(campanha);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -95,7 +142,7 @@ namespace Core_RBS.Controllers
             }
 
             var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-            var campanha = await _context.Campanhas.FirstOrDefaultAsync(p => p.CamID == id && p.IdentityUser.Id == usuario.Id);
+            var campanha = await _context.Campanhas.FirstOrDefaultAsync(p => p.CamID == id && p.Usuario.Id == usuario.Id);
             if (campanha == null)
             {
                 return NotFound();
@@ -146,7 +193,7 @@ namespace Core_RBS.Controllers
                 return NotFound();
             }
             var usuario = _context.Users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-            var campanha = await _context.Campanhas.FirstOrDefaultAsync(m => m.CamID == id || m.IdentityUser.Id == usuario.Id);
+            var campanha = await _context.Campanhas.FirstOrDefaultAsync(m => m.CamID == id && m.Usuario.Id == usuario.Id);
             if (campanha == null)
             {
                 return NotFound();

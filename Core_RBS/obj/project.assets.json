@@ -8623,11 +8623,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Vinicius\\OneDrive\\IFS\\Web2\\Core_RBS\\Core_RBS\\Core_RBS.csproj",
+      "projectUniqueName": "D:\\Vinicius\\Documents\\GitHub\\VotoIFS\\Core_RBS\\Core_RBS.csproj",
       "projectName": "Core_RBS",
-      "projectPath": "D:\\Vinicius\\OneDrive\\IFS\\Web2\\Core_RBS\\Core_RBS\\Core_RBS.csproj",
+      "projectPath": "D:\\Vinicius\\Documents\\GitHub\\VotoIFS\\Core_RBS\\Core_RBS.csproj",
       "packagesPath": "C:\\Users\\vinic\\.nuget\\packages\\",
-      "outputPath": "D:\\Vinicius\\OneDrive\\IFS\\Web2\\Core_RBS\\Core_RBS\\obj\\",
+      "outputPath": "D:\\Vinicius\\Documents\\GitHub\\VotoIFS\\Core_RBS\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\vinic\\AppData\\Roaming\\NuGet\\NuGet.Config",

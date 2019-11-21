@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Core_RBS.Models.Voto>
+@{
+    ViewData["Title"] = "Votos por Campanha";
+}
+
+<h1>Votos: @ViewBag.DescricaoCampanha</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nota
+            </th>
+            <th>
+                Comentário
+            </th>
+            <th>
+                Data/Hora
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {            
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nota)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comentario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataVoto)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="col-sm-2">
+    <div class="row"><b>Média: @ViewBag.Media de 5</b></div>
+</div>
+

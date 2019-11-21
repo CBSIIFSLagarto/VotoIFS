@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Microsoft.AspNetCore.Identity.Usuario>
+﻿@model IEnumerable<Core_RBS.Models.Usuario>
 @{
     ViewData["Title"] = "Usuários";
 }
@@ -8,6 +8,7 @@
 <p>
     <a asp-area="Identity" asp-page="/Account/Register">Novo Usuário</a>
 </p>
+
 @if (TempData["Success"] != null)
 {
     <div class="alert-success border-success badge-success border">
@@ -19,6 +20,7 @@
         <tr>
             <th>Id</th>
             <th>Nome</th>
+            <th>E-mail</th>
             <th></th>
         </tr>
     </thead>
@@ -30,12 +32,27 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    <a asp-action="Reset" asp-route-id="@item.UserName">Reiniciar Senha</a>
-                </td>
-            </tr>
+                    <a asp-action="Reset" asp-route-id="@item.UserName">Reiniciar Senha |</a>
+                    <a asp-action="RoleUpdate" asp-route-id="@item.UserName">
+                        @if (item.IsAdmin)
+                        {
+                            <span>Remover Admin</span>
+                        }
+                        else
+                        {
+                            <span>Add Admin</span>
+                        }
+                    </a>
+
+</td>
+
+</tr>
         }
     </tbody>
 </table>
