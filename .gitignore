@@ -489,3 +489,4 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/aspnetcore,visualstudio,visualstudiocode
+Core_RBS/out/*
