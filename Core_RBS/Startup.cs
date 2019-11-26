@@ -24,10 +24,14 @@ namespace Core_RBS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("ConnectionMyPc")));
+                //options.UseSqlServer(
+                //    Configuration.GetConnectionString("ConnectionMyPc"))
+                options.UseSqlite(Configuration.GetConnectionString("SqLite"))
+                );
             //services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddIdentity<Usuario, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            services.AddIdentity<Usuario, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -52,7 +56,9 @@ namespace Core_RBS
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
+            UserManager<Usuario> userManager, 
+            RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -72,6 +78,8 @@ namespace Core_RBS
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            DbInitializer.SeedData(userManager, roleManager);
 
             app.UseEndpoints(endpoints =>
             {
