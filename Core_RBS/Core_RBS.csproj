@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UserSecretsId>aspnet-Core_RBS-22FE3365-DAFB-4788-B084-00E8C5D3BC93</UserSecretsId>
+    <StartupObject>Core_RBS.Program</StartupObject>
   </PropertyGroup>
 
 
