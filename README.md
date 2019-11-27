@@ -14,25 +14,37 @@
  docker build --pull -t votoifs .
  ```
 
-## Para testar/Executar
+## Para Executar
 
 - Com a imagem compilada, execute:
 
 ```sh
-docker run --rm -it -p 8000:80 -v <pasta na maquina>:/app/Database
+docker run --name votoifs \
+    --rm -it \
+    -p 8000:80 \
+    --mount type=bind,source=<local_na_maquina_fisica>,target=/app/DataBase \
+    votoifs
+```
+> Substituir:
+>  - `<local_na_maquina_fisica>` por um caminho da sua máquina.
+
+Exemplo:
+
+```sh
+docker run --name votoifs --rm -it \
+      -p 8000:80 \
+      --mount type=bind,source=/home/pi/Documents/DataBase,target=/app/DataBase \
+      votoifs
 ```
 
+# Para Testar
 
-- Substituir:
-  - `<pasta na maquina>` por um caminho da sua máquina
-- Usuários:
-  - Administrador
-    - Login: administrador@localhost.com
-	- Senha: 123qwe
+Abrir a URL `http://<ip>:8000` e fazer login com um dos perfis abaixo:
 
-  - Professor 
-    - Login: professor@localhost.com
-	- Senha: 123qwe
+Perfil | Login | Senha 
+-------|:-----:|:----:|
+👮🏻 Administrador | administrador@localhost.com | 123qwe
+👨‍ Professor | professor@localhost.com | 123qwe
 
 ## Autores
 
