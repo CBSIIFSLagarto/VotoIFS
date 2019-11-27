@@ -3,7 +3,8 @@
 ![Version](https://img.shields.io/badge/version-alpha-blue.svg?cacheSeconds=2592000)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 
-> Trabalho realizado pelos alunos do curso de Sistemas de informação, na disciplina Programação para Web 2
+A proposta do sistema é computar votos de uma determinada Campanha (entenda como aula ou apresentação) através do registro anônimo do voto. Com ele será possível, por exemplo, saber como suas aulas são vistas e também avaliar equipes que estão apresentando os trabalhos.
+
 
 ## Compilação/instalação
 
@@ -46,10 +47,17 @@ Perfil | Login | Senha
 👮🏻 Administrador | administrador@localhost.com | 123qwe
 👨‍ Professor | professor@localhost.com | 123qwe
 
+
+# Telas
+
+
+
+
 ## Autores
 
 👤 **Turma da disciplina de Programação Web 2 do IFS - Ano 2019.2**
 
+> Trabalho realizado pelos alunos do curso de Sistemas de informação, na disciplina Programação para Web 2
 
 ## Contribua com o projeto
 
