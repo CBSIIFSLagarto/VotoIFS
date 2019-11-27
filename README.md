@@ -1,4 +1,4 @@
-# Welcome to Sistema de votos de aulas
+# Sistema de votos de aulas
 
 ![Version](https://img.shields.io/badge/version-alpha-blue.svg?cacheSeconds=2592000)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
