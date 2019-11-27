@@ -1,11 +1,11 @@
-# Welcome to Sistema de votaos de aulas
+# Welcome to Sistema de votos de aulas
 
 ![Version](https://img.shields.io/badge/version-alpha-blue.svg?cacheSeconds=2592000)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 
 > Trabalho realizado pelos alunos do curso de Sistemas de informação, na disciplina Programação para Web 2
 
-## Install
+## Compilação/instalação
 
 - Realizar o clone do repositório
 - Entrar na pasta principal e executar o comando:
