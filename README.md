@@ -48,8 +48,16 @@ Perfil | Login | Senha
 👨‍ Professor | professor@localhost.com | 123qwe
 
 
-# Telas
+# Demo 
 
+## Instalação e execução
+
+[![asciicast](https://asciinema.org/a/mETmTSfZqWI1mb0zuipjMc7dS.svg)](https://asciinema.org/a/mETmTSfZqWI1mb0zuipjMc7dS)
+
+
+## Telas
+
+![Telas](https://github.com/CBSIIFSLagarto/VotoIFS/blob/master/SistemaVotos.gif)
 
 
 
