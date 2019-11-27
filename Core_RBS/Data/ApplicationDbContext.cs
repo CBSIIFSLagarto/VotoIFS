@@ -7,6 +7,7 @@ namespace Core_RBS.Data
 {
     public class ApplicationDbContext : IdentityDbContext<Usuario>
     {
+       
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
