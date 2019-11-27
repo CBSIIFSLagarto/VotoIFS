@@ -1,0 +1,12 @@
+﻿version: "3.7"
+services:
+  web:
+    build: .
+    ports:
+      - "8000:80"
+    expose:
+      - "8000"
+    volumes:
+      - DataBase:/app/DataBase
+volumes: 
+  DataBase:
