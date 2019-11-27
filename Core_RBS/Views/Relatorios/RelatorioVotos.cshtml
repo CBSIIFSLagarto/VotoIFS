@@ -44,47 +44,35 @@
 <div class="panel panel-primary">
     <div class="panel-body">
         <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Campanha</th>
+                    <th>De</th>
+                    <th>Até</th>
+                    <th>Média</th>
+                </tr>
+            </thead>
             @foreach (var campanha in Model.Campanhas)
             {
-                <thead>
+                <tbody>
                     <tr>
-                        <th>@campanha.Descricao</th>
-                        <th>@campanha.DataHoraFim - @campanha.DataHoraFim</th>
-                        <th>                           
+                        <td>@campanha.Descricao</td>
+                        <td>@campanha.DataHoraInicio</td>
+                        <td>@campanha.DataHoraFim</td>
+                        <td>
                             @if (campanha.Votos.Count > 0)
                             {
-                                <span>Total de votos: @campanha.Votos.Count - Media: @Math.Round(campanha.Votos.Sum(p => p.Nota) / (double)campanha.Votos.Count, 2)</span>
+                                <span>@Math.Round(campanha.Votos.Sum(p => p.Nota) / (double)campanha.Votos.Count, 2)</span>
                             }
                             else
                             {
                                 <span>0</span>
                             }
 
-                        </th>
+                        </td>
                     </tr>
-                </thead>
-                foreach (var voto in campanha.Votos)
-                {
-                    <tbody>
-                        <tr>
-                            <td>
-                                Nota: @voto.Nota
-                            </td>
-                            <td>
-                                Data/Hora voto: @voto.DataVoto
-                            </td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                }
+                </tbody>
             }
-            <thead>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td>Total de Votos: @ViewBag.TotalVotos - Media Geral: @ViewBag.MediaGeral</td>
-                </tr>
-            </thead>
         </table>
     </div>
 </div>
