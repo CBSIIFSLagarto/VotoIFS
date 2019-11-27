@@ -16,7 +16,7 @@ namespace Core_RBS.Models
 
         [Display(Name = "Chave de acesso")]
         //[Required(ErrorMessage = "Chave de acesso é obrigatória", AllowEmptyStrings = false)]
-        [StringLength(20, MinimumLength = 4)]
+        [StringLength(20, MinimumLength = 4, ErrorMessage = "A chave de acesso deve conter no mínimo 4 e máximo 20 caracteres.")]
         public String Chave
         {
             get
