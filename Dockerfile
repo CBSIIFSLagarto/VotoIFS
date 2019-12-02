@@ -19,4 +19,5 @@ COPY --from=build /app/Core_RBS/out ./
 
 RUN apt-get update && apt-get install -y libc6-dev libgdiplus && rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT ["dotnet", "Core_RBS.dll"]
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet Core_RBS.dll
+# ENTRYPOINT ["dotnet", "Core_RBS.dll"]
